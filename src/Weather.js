@@ -1,17 +1,19 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 
 const Weather = () => {
   const [data, setData] = useState(null);
   const API_KEY = "6ec556521fe3cc745950e32ddf07139f";
+  let img_url = null;
 
   // 미운트 된 후(다른 함수들은 마운트 전 이미 실행됨?) 실행
   useEffect(() => {
     const getWeather = async () => {
       try {
         // await 기다리고 다음 작업 실행, &units=metric : 섭씨온도로 요청
+        // const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`);
         const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=Seoul&appid=${API_KEY}&units=metric`);
+
         // response.data는 json객체값이 들어있다. setData로 상태 업데이트를 했는데 바로 아래에서 data를 조회하면 업데이트가 안되있는 이유.
         // 아래 setData는 await가 완료되면 그때 실행됨, 아직 실행안됬으므로 try,catch문이 있는 getWeather 함수는 대기 중이 걸리고,
         // 그 함수 아래 코드가 실행됨, 이후 await 완료, setData로 상태업데이트 하는 순간 state 변화로 인한 리렌더링 발생
@@ -34,23 +36,29 @@ const Weather = () => {
   // 오류로 too many rerender라고 뜬다.
   // data에 있는 값은 다른 state에 저장안하고 참조하는 방식으로 사용하는 것이 좋을 듯 하다.
 
-  const img_url = `http://openweathermap.org/img/wn/${data && data.weather[0].icon}@2x.png`;
-
+  // const img_url = `http://openweathermap.org/img/wn/${data && data.weather[0].icon}@2x.png`;
+  if (data) {
+    img_url = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+  }
   // 객체는 렌더링 불가, JSON.stringify(data)로 JSON문자열로 변환 후 렌더링 가능,
   // 객체내의 문자열은 JSON.stringify() 필요없다.
   return (
     <div>
-      <br />
-      {data && JSON.stringify(data, null, 2)}
-      {data && data.weather[0].main}
-      <br />
-      <img src={img_url} />
-      <p>현재 온도(체감) : {data && Math.floor(data.main.temp)}°C</p>
-      <p>체감 온도 : {data && Math.floor(data.main.feels_like)}°C</p>
-      <p>
+      <div>
+        <span className="icon">
+          <img src={img_url} alt="icon" />
+        </span>
+        <span className="temprature">
+          {/* {data && data.weather[0].main} */}
+          {data && Math.floor(data.main.temp)}°C
+        </span>
+      </div>
+
+      {/* <p>체감 온도 : {data && Math.floor(data.main.feels_like)}°C</p> */}
+      {/* <p>
         오늘 최저~최고 온도 : {data && Math.floor(data.main.temp_min)}°C ~ {data && Math.floor(data.main.temp_max)}°C
-      </p>
-      <p>습도 : {data && data.main.humidity}%</p>
+      </p> */}
+      {/* <p>습도 : {data && data.main.humidity}%</p> */}
     </div>
   );
 };
