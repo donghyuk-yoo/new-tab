@@ -1,6 +1,5 @@
 import React from "react";
-import Weather from "./Weather";
-import Weather2 from "./Weather2";
+import Location from "./Location";
 import styled, { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
@@ -21,9 +20,7 @@ function App() {
     <>
       <GlobalStyle />
       <p>App</p>
-      <Weather />
-      <Line />
-      <Weather2 />
+      <Location />
       <Line />
     </>
   );
