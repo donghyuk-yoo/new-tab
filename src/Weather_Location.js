@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Weather_API from "./Weather_API";
+import Weather from "./Weather";
 
-const Location = () => {
+const Weather_Location = () => {
   const [lat, setLat] = useState("");
   const [lon, setLon] = useState("");
 
@@ -19,7 +19,7 @@ const Location = () => {
     getPosition();
   }, []);
 
-  return <div>{lat && lon && <Weather_API lat={lat} lon={lon} />}</div>;
+  return <div>{lat && lon && <Weather lat={lat} lon={lon} />}</div>;
 };
 
-export default Location;
+export default Weather_Location;
