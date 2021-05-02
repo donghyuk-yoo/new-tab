@@ -2,15 +2,15 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-const WeatherInfo = styled.div`
-  width: 10rem;
-  height: 9rem;
+const Weather_Info = styled.div`
   /* float: right; */
   // 우측으로 정렬
+  position: absolute;
+  right: 2rem;
 
   .iconTemp {
-    width: 10rem;
-    height: 7rem;
+    /* width: 10rem;
+    height: 7rem; */
 
     .icon {
       width: 5rem;
@@ -47,13 +47,13 @@ const Weather = ({ lat, lon }) => {
   }, []);
 
   return (
-    <WeatherInfo>
+    <Weather_Info>
       <div className="iconTemp">
         <div className="icon">{data && <img src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`} alt="weather icon" />}</div>
         <div className="Temp">{data && Math.floor(data.main.temp)}°C</div>
       </div>
       <div className="name">{data && data.name}</div>
-    </WeatherInfo>
+    </Weather_Info>
   );
 };
 

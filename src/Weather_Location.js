@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Weather from "./Weather";
+import styled from "styled-components";
+
+const Weather_Position = styled.div`
+  height: 10rem;
+  /* background: red; */
+  position: relative;
+`;
 
 const Weather_Location = () => {
   const [lat, setLat] = useState("");
@@ -19,7 +26,7 @@ const Weather_Location = () => {
     getPosition();
   }, []);
 
-  return <div>{lat && lon && <Weather lat={lat} lon={lon} />}</div>;
+  return <Weather_Position>{lat && lon && <Weather lat={lat} lon={lon} />}</Weather_Position>;
 };
 
 export default Weather_Location;
