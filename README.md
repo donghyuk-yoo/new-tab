@@ -8,6 +8,8 @@ api(weather, news)
 todo
 ```
 
+<<<<<<< HEAD
+
 ## now
 
 ```
