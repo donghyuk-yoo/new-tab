@@ -7,7 +7,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: 16px;
   }
   body {
-    background: #e9ecef;
+    background: #fff;
     /* font-family: ''; */
     font-size: 1rem;
   }

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import styled from "styled-components";
 
 const Weather_Info = styled.div`
@@ -33,18 +33,47 @@ const Weather_Info = styled.div`
   }
 `;
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "LOADING":
+    case "SUCCESS":
+    case "ERROR":
+    default:
+      return state;
+  }
+};
+
 const Weather = ({ lat, lon }) => {
+  const [state, dispatch] = useReducer(reducer, {
+    loading: false,
+    data: null,
+    error: null,
+  });
+
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const API_KEY = "6ec556521fe3cc745950e32ddf07139f";
-  const [data, setData] = useState("");
 
   const getWeather = async () => {
-    const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`);
-    setData(response.data);
+    try {
+      setLoading(true);
+      const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`);
+      setData(response.data);
+    } catch (e) {
+      console.log(e.response.status);
+      setError(e);
+    }
+    setLoading(false);
   };
 
   useEffect(() => {
     getWeather();
   }, []);
+
+  if (loading) return <div>불러오는 중...</div>;
+  if (error) return <div>에러</div>;
+  if (!data) return null;
 
   return (
     <Weather_Info>
