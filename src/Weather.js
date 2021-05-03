@@ -36,10 +36,26 @@ const Weather_Info = styled.div`
 const reducer = (state, action) => {
   switch (action.type) {
     case "LOADING":
+      return {
+        loading: true,
+        data: null,
+        error: null,
+      };
     case "SUCCESS":
+      return {
+        loading: false,
+        data: action.data,
+        error: null,
+      };
     case "ERROR":
+      return {
+        loading: false,
+        data: null,
+        error: action.error,
+      };
     default:
-      return state;
+      // 기존 상태를 반환하여 유지해도 되지만 보통 useReducer에서는 에러 발생시킴
+      throw new Error(`Unhandled action type: ${action.type}`);
   }
 };
 
@@ -50,27 +66,24 @@ const Weather = ({ lat, lon }) => {
     error: null,
   });
 
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const API_KEY = "6ec556521fe3cc745950e32ddf07139f";
 
   const getWeather = async () => {
+    dispatch({ type: "LOADING" });
     try {
-      setLoading(true);
       const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`);
-      setData(response.data);
+      dispatch({ type: "SUCCESS", data: response.data });
     } catch (e) {
-      console.log(e.response.status);
-      setError(e);
+      // console.log(e.response.status);
+      dispatch({ type: "ERROR", error: e });
     }
-    setLoading(false);
   };
 
   useEffect(() => {
     getWeather();
   }, []);
 
+  const { loading, data, error } = state;
   if (loading) return <div>불러오는 중...</div>;
   if (error) return <div>에러</div>;
   if (!data) return null;
