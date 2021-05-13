@@ -99,5 +99,8 @@ const Weather = ({ lat, lon }) => {
   );
 };
 
-// props 변경외에는 리렌더링시 메모이징 된 내용 그대로 사용 => 성능상 이점(최적화)
+// React.memo : props 변경외에는 리렌더링시 메모이징 된 내용 그대로 사용 => 성능상 이점(최적화)
+// useMemo() : 연산최적화, 연산했던 state 재사용, state 반환, 화살표함수 형식으로 함수도 반환가능하며 useCallback과 동일해진다.
+// useCallback : 함수재사용, 함수 반환
+// 위 최적화 기능들을 너무 많이 사용할 시 메모이징으로 인해 메모리용량을 많이 차지할 수 있음을 염두
 export default React.memo(Weather);
